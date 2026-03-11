@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para a minha 🐨 🤍</title>
+    <style>
+        :root {
+            --cor-primaria: #ff4d6d;
+            --cor-texto-claro: #ffffff;
+        }
+
+        body, html {
+            margin: 0; padding: 0;
+            height: 100%; width: 100%;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; /* Impede barras de rolagem */
+        }
+
+        /* Plano de Fundo com a Imagem e Camada de Sobreposição */
+        .bg-image {
+            background-image: url('fundo.jpg'); /* Nome do seu arquivo de imagem */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -2;
+        }
+
+        /* Camada escura transparente para dar contraste */
+        .overlay {
+            position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.4); /* Ajuste a opacidade (0.4) se necessário */
+            z-index: -1;
+        }
+
+        /* Efeito de chuva de corações (ajustado para melhor visibilidade) */
+        .heart {
+            position: fixed; top: -10vh;
+            font-size: 24px;
+            color: rgba(255, 77, 109, 0.8); /* Cor rosa com alguma transparência */
+            z-index: 0; /* Fica atrás do container mas na frente do fundo */
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        /* Container Principal */
+        .container {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.85); /* Fundo branco semi-transparente */
+            padding: 2rem; border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            max-width: 90%; width: 350px;
+            z-index: 2; /* Fica na frente de tudo */
+            text-align: center;
+        }
+
+        h1 { color: var(--cor-primaria); font-size: 1.6rem; margin-top: 0; }
+        p { color: #333; margin: 5px 0; }
+        #contador { font-size: 1.2rem; color: #111; margin: 20px 0; font-weight: bold; }
+        
+        .botoes { display: flex; justify-content: center; gap: 15px; margin-top: 25px; height: 40px; }
+        button { padding: 10px 25px; border: none; border-radius: 50px; cursor: pointer; font-weight: bold; transition: 0.3s; font-size: 1rem; }
+        
+        #sim { background-color: var(--cor-primaria); color: white; }
+        #sim:hover { transform: scale(1.05); }
+        #nao { background-color: #ddd; color: #555; position: relative; } /* Posição relativa inicial */
+    </style>
+</head>
+<body>
+
+    <div class="bg-image"></div>
+    <div class="overlay"></div>
+
+    <div class="container">
+        <h1>Para a minha 🐨 🤍</h1>
+        <p>Estamos juntos há:</p>
+        <div id="contador">Calculando momentos...</div>
+
+        <p style="margin-top: 35px; font-weight: bold;">Aceitas continuar a ser a minha koala mais linda do mundo?</p>
+        <div class="botoes">
+            <button id="sim" onclick="aceitou()">SIM!</button>
+            <button id="nao" onmouseover="foge()" onclick="foge()">NÃO</button>
+        </div>
+    </div>
+
+    <script>
+        // Data ajustada: 31 de Dezembro de 2025 (Ano Passado)
+        // Lembre-se: Janeiro é 0, Dezembro é 11
+        const dataInicio = new Date(2025, 11, 31, 0, 0, 0); 
+
+        function atualizarContador() {
+            const agora = new Date();
+            const diff = agora - dataInicio;
+
+            // Tratamento para caso a data atual seja anterior à data de início (para testes)
+            const tempoPassado = diff > 0 ? diff : 0;
+
+            const dias = Math.floor(tempoPassado / (1000 * 60 * 60 * 24));
+            const horas = Math.floor((tempoPassado / (1000 * 60 * 60)) % 24);
+            const mins = Math.floor((tempoPassado / 1000 / 60) % 60);
+            const segs = Math.floor((tempoPassado / 1000) % 60);
+            
+            document.getElementById('contador').innerHTML = `${dias}d ${horas}h ${mins}m ${segs}s`;
+        }
+        
+        // Atualiza imediatamente e depois a cada segundo
+        atualizarContador();
+        setInterval(atualizarContador, 1000);
+
+        // Lógica do botão "Não" que foge
+        function foge() {
+            const btn = document.getElementById('nao');
+            // Garante que o botão não saia da área visível da tela
+            const areaWidth = window.innerWidth - btn.offsetWidth - 20;
+            const areaHeight = window.innerHeight - btn.offsetHeight - 20;
+
+            btn.style.position = 'fixed'; // Muda para fixed para mover pela tela toda
+            btn.style.left = Math.random() * areaWidth + 10 + 'px';
+            btn.style.top = Math.random() * areaHeight + 10 + 'px';
+        }
+
+        function aceitou() {
+            alert("Escolha correta! Adoro-te, minha 🐨!");
+            // Opcional: Redirecionar para uma música ou mensagem especial
+            // window.location.href = "sua_url_aqui";
+        }
+
+        // Chuva de corações
+        function criarCoracao() {
+            const h = document.createElement('div');
+            h.classList.add('heart'); h.innerHTML = '❤️';
+            h.style.left = Math.random() * 100 + 'vw';
+            // Varia a velocidade e o tamanho para ficar mais orgânico
+            h.style.animationDuration = Math.random() * 3 + 2 + 's';
+            h.style.fontSize = Math.random() * 15 + 15 + 'px';
+            document.body.appendChild(h);
+            
+            // Remove o elemento depois que a animação termina
+            setTimeout(() => h.remove(), 5000);
+        }
+        // Cria um novo coração a cada 400 milissegundos
+        setInterval(criarCoracao, 400);
+    </script>
+</body>
+</html>
